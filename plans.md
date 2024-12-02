@@ -14,6 +14,7 @@
 ## iperf3
 CWNDの自動調節等有利に進みそうなのでTCPを
 利用する。
+[![グラフ](./graph_img/network_bandwidth.png)]
 ### node1
 受け取り側なので省略
 ### node2
