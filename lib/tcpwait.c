@@ -26,6 +26,11 @@ int waitpeer(int waitsock, struct sockaddr_in* serverAddr)
     serverAddr->sin_port = htons(TCP_SERVER_PORT); /* 待ち受けるポート */
     serverAddr->sin_addr.s_addr = htonl(INADDR_ANY); /* どのIPアドレス宛でも */
 
+    if ((sock0 = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        perror("socket");
+        return -1;
+    }
+
     /* STEP 3: ソケットとアドレスをbindする */
     if (bind(sock0, (struct sockaddr*)serverAddr, sizeof(*serverAddr)) < 0) {
         perror("bind");
