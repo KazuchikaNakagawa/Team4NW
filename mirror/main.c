@@ -6,6 +6,10 @@ int main(int argc, char** argv)
 {
     struct sockaddr_in clientAddr;
     struct sockaddr_in serverAddr;
+    if (argc < 2) {
+        fprintf(stderr, "Usage: %s <mirror-server-address>\n", argv[0]);
+        return -1;
+    }
     const char* server_ipaddr_str = argv[1];
     char buf[BUF_LEN];
     while (1) {
