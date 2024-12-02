@@ -12,8 +12,15 @@ int main(int argc, char** argv)
     }
     const char* server_ipaddr_str = argv[1];
     char buf[BUF_LEN];
+
+    int sock;
+    if ((sock = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        perror("socket");
+        return -1;
+    }
+
     while (1) {
-        int clientsock = waitpeer(&clientAddr);
+        int clientsock = waitpeer(sock, &clientAddr);
         if (clientsock < 0) {
             perror("waitpeer");
             return -1;
