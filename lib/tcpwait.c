@@ -21,7 +21,7 @@ int waitpeer(int waitsock, struct sockaddr_in* serverAddr)
         (const char*)&yes, sizeof(yes));
 
     /* STEP 2: クライアントからの要求を受け付けるIPアドレスとポートを設定する */
-    memset(&serverAddr, 0, sizeof(*serverAddr)); /* ゼロクリア */
+    memset(serverAddr, 0, sizeof(*serverAddr)); /* ゼロクリア */
     serverAddr->sin_family = AF_INET; /* Internetプロトコル */
     serverAddr->sin_port = htons(TCP_SERVER_PORT); /* 待ち受けるポート */
     serverAddr->sin_addr.s_addr = htonl(INADDR_ANY); /* どのIPアドレス宛でも */
