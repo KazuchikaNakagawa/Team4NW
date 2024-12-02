@@ -16,10 +16,6 @@ int waitpeer(int waitsock, struct sockaddr_in* serverAddr)
     int addrLen;
     int sock;
 
-    /* sock0のコネクションがTIME_WAIT状態でもbind()できるように設定 */
-    setsockopt(sock0, SOL_SOCKET, SO_REUSEADDR,
-        (const char*)&yes, sizeof(yes));
-
     /* STEP 2: クライアントからの要求を受け付けるIPアドレスとポートを設定する */
     memset(serverAddr, 0, sizeof(*serverAddr)); /* ゼロクリア */
     serverAddr->sin_family = AF_INET; /* Internetプロトコル */
@@ -30,6 +26,10 @@ int waitpeer(int waitsock, struct sockaddr_in* serverAddr)
         perror("socket");
         return -1;
     }
+
+    /* sock0のコネクションがTIME_WAIT状態でもbind()できるように設定 */
+    setsockopt(sock0, SOL_SOCKET, SO_REUSEADDR,
+        (const char*)&yes, sizeof(yes));
 
     /* STEP 3: ソケットとアドレスをbindする */
     if (bind(sock0, (struct sockaddr*)serverAddr, sizeof(*serverAddr)) < 0) {
@@ -59,6 +59,7 @@ int waitpeer(int waitsock, struct sockaddr_in* serverAddr)
         printf("accepted:  ip address: %s, ", inet_ntoa(addr));
         printf("port#: %d\n", ntohs(clientAddr.sin_port));
 
+        close(sock0);
         return sock;
     }
 }
