@@ -19,9 +19,9 @@ $(CLIENT):
 
 node1: $(CLIENT)
 # node2 -> node1
-	$(CLIENT) 172.20.0.20 10000 out1.dat
+	$(CLIENT) 172.20.0.20 10000 out1.dat &
 # node3 -> node1
-	$(CLIENT) 172.21.0.30 10001 out2.dat
+	$(CLIENT) 172.21.0.30 10001 out2.dat &
 
 node2: $(MIRROR)
 # node3 -> node2
