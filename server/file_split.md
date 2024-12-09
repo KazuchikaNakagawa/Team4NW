@@ -6,7 +6,7 @@ gcc tcp_file_split_server_w_thread.c -o tcp_file_split_server_w_thread.out -lpth
 code内のSPLIT_LENで分割をコントロール可能。
 
 ```console
-./tcp_file_split_server_w_thread.out test.pdf
+./tcp_file_split_server_w_thread.out test.pdf 0 10 20 30 
 ```
 
 ### file分割して、統合するコード

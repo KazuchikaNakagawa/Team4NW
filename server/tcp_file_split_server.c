@@ -8,7 +8,6 @@
 /*                                                                  */
 
 #include "icslab2_net.h"
-#define SPLIT_LEN 100
 int
 main(int argc, char** argv)
 {
@@ -31,19 +30,31 @@ main(int argc, char** argv)
     int fd;                         /* ファイルデスクリプタ */
     int text1;
     int text2;
-
     int     yes = 1;                /* setsockopt()用 */
+    int splitlens[4] = {16666666, 0, 0, 0}; 
 
     /* コマンドライン引数の処理 */
-    if(argc != 2) {
+    if(argc < 2) {
         printf("Usage: %s filename\n", argv[0]);
         printf("ex. %s http_get_req.txt\n", argv[0]);
         return 0;
     }
 
+    if(argc == 3) {
+        int SPLIT_LEN = atoi(argv[2]);
+    }
+
     /* 返送するファイル名 */
     filename = argv[1];
     printf("filename: %s\n", filename);
+
+    if(argc == 3) {
+        int SPLIT_LEN = atoi(argv[2]);
+    }
+    if(argc == 4) {
+        int SPLIT_LEN = atoi(argv[2]);
+        int SPLIT_LEN = atoi(argv[3]);
+    }
     
     /* STEP 1: TCPソケットをオープンする */
     if((sock0 = socket(AF_INET, SOCK_STREAM, 0)) < 0) {

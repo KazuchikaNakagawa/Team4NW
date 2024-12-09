@@ -10,12 +10,12 @@
 #include <arpa/inet.h>
 
 // #define SPLIT_LEN (50ULL * 1024ULL * 1024ULL) // 50MB
-#define SPLIT_LEN 100
+int splitlens[5] = {0, 16666666, 16666666*2, 16666666*3, 100000000}; 
 
 struct thread_arg {
     int sock;
     char filename[256];
-    int part; // 1回目か2回目かを表す
+    int part; // 何個目のクライアントかを表す。接続順。
 };
 
 void* client_handler(void* arg) {
@@ -48,12 +48,8 @@ void* client_handler(void* arg) {
     }
 
     // 送信オフセットと送信サイズの決定
-    off_t offset = 0;
-    off_t to_send = SPLIT_LEN; // 50MB
-    if (part == 2) {
-        // 2回目の接続は50MB後ろから開始
-        offset = SPLIT_LEN;
-    }
+    off_t offset = splitlens[part - 1];
+    off_t to_send = splitlens[part] - splitlens[part - 1];
 
     // ファイル位置を設定
     if(lseek(fd, offset, SEEK_SET) < 0) {
@@ -103,11 +99,37 @@ int main(int argc, char** argv)
     struct sockaddr_in serverAddr;
     int yes = 1;
 
-    if(argc != 2) {
+    switch (argc)
+    {
+    case 4:
+        splitlens[0] = atoi(argv[2]);
+        splitlens[1] = atoi(argv[3]);
+        break;
+    case 5:
+        splitlens[0] = atoi(argv[2]);
+        splitlens[1] = atoi(argv[3]);
+        splitlens[2] = atoi(argv[4]);
+        break;
+    case 6:
+        splitlens[0] = atoi(argv[2]);
+        splitlens[1] = atoi(argv[3]);
+        splitlens[2] = atoi(argv[4]);
+        splitlens[3] = atoi(argv[5]);
+        break;
+    case 7:
+        splitlens[0] = atoi(argv[2]);
+        splitlens[1] = atoi(argv[3]);
+        splitlens[2] = atoi(argv[4]);
+        splitlens[3] = atoi(argv[5]);
+        splitlens[4] = atoi(argv[6]);
+        break;
+    default:
+        printf("%d \n", argc);
         printf("Usage: %s filename\n", argv[0]);
         return 0;
+        break;
     }
-
+    
     // 接続回数を数えるカウンタ
     // 本例では2回接続があったら2回に分けて送る
     // スレッド安全を保つためにaccept前後で扱うならメインスレッドのみで使うのでmutex不要
@@ -149,7 +171,7 @@ int main(int argc, char** argv)
         // 接続回数をインクリメント
         connection_count++;
 
-        if (connection_count > 2) {
+        if (connection_count > argc - 2) {
             // 3回目以降は送るデータなしとする場合
             // あるいはエラー処理。ここでは閉じておく
             close(sock);
@@ -174,13 +196,6 @@ int main(int argc, char** argv)
 
         // スレッド分離
         pthread_detach(tid);
-
-        // 2回送信したら終了する場合はここでbreakしても良い
-        // 今回は特に記述しないが、必要なら:
-        // if (connection_count == 2) {
-        //     printf("Both halves sent, exiting server.\n");
-        //     break;
-        // }
     }
 
     close(sock0);
