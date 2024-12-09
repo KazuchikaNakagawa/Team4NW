@@ -3,12 +3,13 @@ CLIENT = ./fclient
 MIRROR = mirror.out
 SERVER = server.out
 DATA = data.dat
+CFLAGS = -I.
 
 $(MIRROR): lib/tcpconnect.c lib/tcpwait.c _mirror/main.c
-	gcc lib/tcpconnect.c lib/tcpwait.c _mirror/main.c -o $(MIRROR) -I.
+	gcc lib/tcpconnect.c lib/tcpwait.c _mirror/main.c -o $(MIRROR) $(CFLAGS)
 
 $(SERVER): 
-	gcc server/tcp_file_split_server_w_thread.c -o $(SERVER) -lpthread
+	gcc server/tcp_file_split_server_w_thread.c -o $(SERVER) -lpthread $(CFLAGS)
 
 $(DATA):
 	head -c 100m /dev/urandom > test.dat
