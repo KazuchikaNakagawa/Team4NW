@@ -98,6 +98,7 @@ int main(int argc, char** argv)
             break;
         }
         if ((n = read(sock2, buf2, BUF_LEN)) < 0) {
+
             close(sock);
             break;
         }
@@ -110,6 +111,7 @@ int main(int argc, char** argv)
 
         /* STEP 7: 送信するファイルをオープン */
         fd = open(filename, O_RDONLY);
+
         if (fd < 0) {
             perror("open");
             return 1;

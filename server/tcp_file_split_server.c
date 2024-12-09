@@ -40,10 +40,14 @@ int main(int argc, char** argv)
         return 0;
     }
 
+    if(argc == 3) {
+        int SPLIT_LEN = atoi(argv[2]);
+    }
+
     /* 返送するファイル名 */
     filename = argv[1];
     printf("filename: %s\n", filename);
-
+  
     /* STEP 1: TCPソケットをオープンする */
     if ((sock0 = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
         perror("socke");
@@ -110,7 +114,6 @@ int main(int argc, char** argv)
 
         /* STEP 7: 送信するファイルをオープン */
         fd = open(filename, O_RDONLY);
-        if (fd < 0) {
             perror("open");
             return 1;
         }
@@ -167,7 +170,6 @@ int main(int argc, char** argv)
 
         /* write(sock, NULL, 0); */
 
-        /* STEP 9: 通信用のソケットのクローズ */
         close(sock);
         printf("closed\n");
     }
