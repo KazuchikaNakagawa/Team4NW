@@ -12,7 +12,7 @@ $(SERVER):
 	gcc server/tcp_file_split_server_w_thread.c -o $(SERVER) -lpthread $(CFLAGS)
 
 $(DATA):
-	head -c 100m /dev/urandom > test.dat
+	head -c 100m /dev/urandom > $(DATA)
 
 $(CLIENT): 
 	gcc client/tcp_file_client.c -o $(CLIENT) $(CFLAGS)
