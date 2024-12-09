@@ -1,19 +1,27 @@
 # variables
 CLIENT = ./fclient
-MIRROR = ./bin/mirror
-SERVER = ./fserver
-DATA = ./data.dat
+MIRROR = mirror.out
+SERVER = server.out
+DATA = data.dat
 
-mirror: lib/tcpconnect.c lib/tcpwait.c _mirror/main.c
+$(MIRROR): lib/tcpconnect.c lib/tcpwait.c _mirror/main.c
 	gcc lib/tcpconnect.c lib/tcpwait.c _mirror/main.c -o $(MIRROR) -I.
 
-node1:
-# node2 -> node1
-	$(CLIENT) 172.20.0.20 10000 out1.dat 
+$(SERVER): 
+	gcc server/tcp_file_split_server_w_thread.c -o $(SERVER) -lpthread
 
-node2:
+$(DATA):
+	head -c 100m /dev/urandom > test.dat
+
+node1: $(CLIENT)
+# node2 -> node1
+	$(CLIENT) 172.20.0.20 10000 out1.dat
+# node3 -> node1
+	$(CLIENT) 172.21.0.30 10001 out2.dat
+
+node2: $(MIRROR)
 # node3 -> node2
 	$(MIRROR) 172.24.0.30 10000
 
-node3:
+node3: $(DATA) $(SERVER)
 	$(SERVER) $(DATA)
