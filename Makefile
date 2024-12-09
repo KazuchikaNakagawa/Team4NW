@@ -1,3 +1,3 @@
-mirror: lib/tcpconnect.c lib/tcpwait.c mirror/main.c
-	gcc lib/tcpconnect.c lib/tcpwait.c mirror/main.c -o bin/mirror -I.
+mirror: lib/tcpconnect.c lib/tcpwait.c _mirror/main.c
+	gcc lib/tcpconnect.c lib/tcpwait.c _mirror/main.c -o bin/mirror -I.
 
