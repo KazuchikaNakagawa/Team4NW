@@ -42,7 +42,7 @@ int main(int argc, char** argv)
         write(serversock, buf, n);
         while ((n = read(serversock, buf, BUF_LEN)) > 0) {
             write(clientsock, buf, n);
-            write(0, buf, n);
+            // write(0, buf, n);
         }
         close(serversock);
         close(clientsock);
