@@ -116,15 +116,6 @@ main(int argc, char** argv)
             return 1;
         }
 
-        // ファイル分割のテスト用コード
-        // int text1 = open("text1.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        // int text2 = open("text2.txt", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        // if (text1 == -1 || text2 == -1) {
-        //     perror("text1.txt or text2.txt open error");
-        //     close(fd);
-        //     return 1;
-        // }
-
         char buf[BUF_LEN];
         ssize_t n;
         int count = 0;
@@ -137,40 +128,14 @@ main(int argc, char** argv)
                 }
             }
         }
-        // ファイルをクローズ
-        // close(text1);
-        // close(text2);
-
-        // int text1_1 = open("text1.txt", O_RDONLY);
-        // int text2_1 = open("text2.txt", O_RDONLY);
-
-        // ファイルを結合する
-        // int text3;
-        // text3 = open("text3.pdf", O_WRONLY | O_CREAT | O_TRUNC, 0644);
-        // if (text3 == -1) {
-        //     perror("text3.txt open error");
-        //     close(fd);
-        //     return 1;
-        // }
-
-        // while ((n = read(text1_1, buf, BUF_LEN)) > 0) {
-        //     write(text3, buf, n);
-        // }
-
-        // while ((n = read(text2_1, buf, BUF_LEN)) > 0) {
-        //     write(text3, buf, n);
-        // }
-
-        // /* STEP 8: ファイル読み込むたびに送信 */
-        // while((n = read(fd, buf, BUF_LEN)) > 0) {
-        //     write(sock, buf, n);
-        // }
-
-        /* write(sock, NULL, 0); */
 
         /* STEP 9: 通信用のソケットのクローズ */        
         close(sock);
+        printf("closed sock\n");
+        /* STEP 9: 通信用のソケットのクローズ */        
+        close(sock2);
         printf("closed\n");
+
     }
 
     /* STEP 10: 待ち受け用ソケットのクローズ */
