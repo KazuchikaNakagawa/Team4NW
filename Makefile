@@ -1,8 +1,8 @@
 # variables
 CLIENT = ./fclient
-MIRROR = mirror.out
-SERVER = server.out
-DATA = data.dat
+MIRROR = ./mirror.out
+SERVER = ./server.out
+DATA = ./data.dat
 CFLAGS = -I.
 
 $(MIRROR): lib/tcpconnect.c lib/tcpwait.c _mirror/main.c
@@ -26,3 +26,6 @@ node2: $(MIRROR)
 
 node3: $(DATA) $(SERVER)
 	$(SERVER) $(DATA)
+
+clean:
+	rm -f $(MIRROR) $(SERVER) $(DATA) out1.dat out2.dat
