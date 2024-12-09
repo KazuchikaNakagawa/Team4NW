@@ -1,4 +1,7 @@
-#include "icslab2_net.h"
+#include "utils/icslab2_net.h"
+#include <arpa/inet.h>
+#include <fcntl.h>
+#include <netinet/in.h>
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -11,6 +14,8 @@
 
 // #define SPLIT_LEN (50ULL * 1024ULL * 1024ULL) // 50MB
 int splitlens[5] = {0, 16666666, 16666666*2, 16666666*3, 100000000}; 
+#include <sys/socket.h>
+#include <unistd.h>
 
 struct thread_arg {
     int sock;
@@ -91,7 +96,6 @@ void* client_handler(void* arg) {
     printf("Client handler (part %d) finished. Sent %ld bytes.\n", part, (long)sent_total);
     return NULL;
 }
-
 
 int main(int argc, char** argv)
 {
