@@ -1,5 +1,5 @@
 # variables
-CLIENT = ./fclient
+CLIENT = ./client.out
 MIRROR = ./mirror.out
 SERVER = ./server.out
 DATA = ./data.dat
@@ -13,6 +13,9 @@ $(SERVER):
 
 $(DATA):
 	head -c 100m /dev/urandom > test.dat
+
+$(CLIENT): 
+	gcc client/tcp_file_client.c -o $(CLIENT) $(CFLAGS)
 
 node1: $(CLIENT)
 # node2 -> node1
@@ -28,4 +31,4 @@ node3: $(DATA) $(SERVER)
 	$(SERVER) $(DATA)
 
 clean:
-	rm -f $(MIRROR) $(SERVER) $(DATA) out1.dat out2.dat
+	rm -f $(MIRROR) $(SERVER) $(DATA) $(CLIENT) out1.dat out2.dat
